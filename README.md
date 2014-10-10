@@ -1,13 +1,5 @@
-GUHack14
-========
-# Team "Where's our food?"
+# Where's the sound?
 
-###*WE WIN.*
-###*WE WIN.*
-###*WE WIN ALREADY.*
-###*WE ARE THE BEST.*
+#### GUTS Hack 14 - Team "Where's our food?"
 
-hugs and kisses xox
-
-#oh yea, blah
-#again hi
+Collaborative music composition via the sendgrid API.

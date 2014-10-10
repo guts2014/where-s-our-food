@@ -1,0 +1,15 @@
+{
+    "name" : "wheres-the-sound",
+    "description" : "Collaborative music creation via the sendgrid email API.",
+    "contributors" : [
+        {"name" : "Scott Maxwell"},
+        {"name" : "Jordan Duncan"},
+        {"name" : "Boyan Asenov"},
+        {"name" : "Marius Vinickis"},
+        {"name" : "Domantas Jurkus"}
+    ],
+    "version" : "0.0.1",
+    "dependencies": {
+        "sendgrid": "1.1.1"
+    }
+}
