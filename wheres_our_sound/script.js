@@ -1,9 +1,8 @@
-var notes = [1, 0, 1, 0, 1, 1, 1, 0];
+function randomNote(){
 
-function randomNote(note){
-	//randomise note
-	//var note = Math.floor((Math.random() * 8) + 1);
-	/*
+	//randomize note
+	var note = Math.floor((Math.random() * 8) + 1);
+	
 	//assign file
 	if (note == 1) {
 		var audio = new Audio('sounds/1.wav');
@@ -25,11 +24,8 @@ function randomNote(note){
 	
 	document.getElementById('text').innerHTML = note;
 	audio.play();
-	*/
-	document.getElementById('text').innerHTML = note;
-	new Audio('sounds/' + note + '.wav').play();
 }
-	
-for (i = 0; i < 6; i++){
-	setTimeout(function(){randomNote(i);}, 1000);
+
+function myFunction() {
+	setInterval(function(){randomNote()}, 300);
 }
