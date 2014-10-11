@@ -1,21 +1,28 @@
-var app = require('http').createServer(handler);
+var multiparty = require('multiparty');
+var http = require('http');
 var io = require('socket.io')(app);
 var fs = require('fs');
+var port = 8080;
 
-app.listen(8080);
+var app = http.createServer(function(req, res) {
+  if (req.method === 'POST') {
+    console.log("POST received");
+    // parse a file upload
+    var form = new multiparty.Form();
 
-function handler (req, res) {
-    fs.readFile(__dirname + '/index.htm',
-    function (err, data) {
-        if (err) {
-            res.writeHead(500);
-        return res.end('Error loading index.htm');
+    form.parse(req, function(err, fields, files) {
+      // See https://sendgrid.com/docs/API_Reference/Webhooks/parse.html for fields
+      console.log(fields.from);
+      console.log(fields.text);
+
+
+    });
+
+    return;
     }
+}).listen(port);
 
-    res.writeHead(200);
-    res.end(data);
-  });
-}
+console.log('Listening on port %d', port);
 
 io.on('connection', function (socket) {
     setInterval(function(){
