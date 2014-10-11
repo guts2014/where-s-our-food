@@ -16,6 +16,7 @@
         $(document).ready(function(){
             $("#fullpage").onepage_scroll({
                 sectionContainer: "section",
+                easing: "cubic-bezier(.66,.01,.4,.98)",
                 loop: false
             });
         });
@@ -49,16 +50,19 @@
             $('#countdown').html("40 seconds left");
 
             //Creates a countdown timer
-            setInterval(function(){
+            var cdInterval = setInterval(function(){
                 var currentDate = new Date().getTime();
                 var secondsLeft = Math.round((targetDate - currentDate) / 1000);
                 if(secondsLeft >= 0){
                     $('#countdown').html(secondsLeft + " seconds left");
+                } else {
+                    clearInterval(cdInterval);
+                    clearInterval(refreshInterval);
                 }
             }, 1000);
 
             //Interval for testing purposes only
-            setInterval(function(){
+            var refreshInterval = setInterval(function(){
                 total = 0;
 
                 for (var i = 0; i < (votes.length); i++) {
@@ -66,7 +70,7 @@
                 }
 
                 createGraph(votes, total);
-            }, 2000);
+            }, 1000);
         }
 
         function createGraph(votes, total){
@@ -99,7 +103,7 @@
          noteArray = [2,4,8,0,4,0,6,0];
 
          function playSampleNotes() {
-             for(i=0; i<16; i++){
+             for(i=0; i<noteArray.length; i++){
                  (function(i){
                      setTimeout(function(){
                          playNote(noteArray[i]);
@@ -115,7 +119,7 @@
                 obj.value+="\n"+"blah test";
                 $("#textarea1").animate({
                     scrollTop:$("#textarea1")[0].scrollHeight - $("#textarea1").height()
-                    },1000)
+                },700)
                 }
 
     </script>
