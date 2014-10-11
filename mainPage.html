@@ -12,6 +12,47 @@
 	var sendgrid_password   = "Qmananas7";
 	var to                  = "a.asenov.boyan@gmail.com";
 
+	targetDate = new Date().getTime() + 40000;
+
+	//Creates a countdown timer
+	setInterval(function(){
+		var currentDate = new Date().getTime();
+		var secondsLeft = Math.round((targetDate - currentDate) / 1000);
+		countdown.innerHTML = secondsLeft + " seconds left";
+	}, 1000)
+
+	//Interval for testing purposes only
+	setInterval(function(){
+		input = [];
+		input[1] = Math.floor(Math.random() * 100);
+		input[2] = Math.floor(Math.random() * 100);
+		input[3] = Math.floor(Math.random() * 100);
+		input[4] = Math.floor(Math.random() * 100);
+		total = 0;
+		for (var i = 1; i < input.length; i++) {
+			total += input[i];
+			console.log(input[i]);
+		}
+
+		createGraph(input, total);
+	}, 1000)
+
+	function createGraph(input, total){
+		var firstScore = document.getElementById("firstScore");
+		var secondScore = document.getElementById("secondScore");
+		var thirdScore = document.getElementById("thirdScore");
+		var fourthScore = document.getElementById("fourthScore");
+		//firstScore.style.width = input[1] / total * 100 + "%";
+		$("#firstScore").animate({width: input[1] / total * 100 + "%"}, 400);
+		$("#secondScore").animate({width: input[2] / total * 100 + "%"}, 400);
+		$("#thirdScore").animate({width: input[3] / total * 100 + "%"}, 400);
+		$("#fourthScore").animate({width: input[4] / total * 100 + "%"}, 400);
+		firstScore.innerHTML = Math.round(input[1] / total * 100) + "%";
+		secondScore.innerHTML = Math.round(input[2] / total * 100) + "%";
+		thirdScore.innerHTML = Math.round(input[3] / total * 100) + "%";
+		fourthScore.innerHTML = Math.round(input[4] / total * 100) + "%";
+ 	}
+
 	function sendMail(){
 		var dotenv = require('dotenv');
 		dotenv.load();
@@ -38,10 +79,46 @@
 
 	}
 	</script>
+	<style type="text/css">
+	div{
+		height: 30px;
+	}
+	.statusBar{
+		width: 400px;
+		background-color: black;
+	}
+	#firstScore{
+		background-color: red;
+	}
+	#secondScore{
+		background-color: blue;
+	}
+	#thirdScore{
+		background-color: green;
+	}
+	#fourthScore{
+		background-color: orange;
+	}
+	</style>
 	<title></title>
 </head>
 <body>
-	<a href="#" class="btn btn-primary" onclick="sendMail()">Test Button</a>
+	<div class="statusBar">
+		<div id="countdown"></div>
+	</div>
+	<div class="statusBar">
+		<div id="firstScore"></div>
+	</div>
+	<div class="statusBar">
+		<div id="secondScore"></div>
+	</div>
+	<div class="statusBar">
+		<div id="thirdScore"></div>
+	</div>
+	<div class="statusBar">
+		<div id="fourthScore"></div>
+	</div>
+	<a href="#" class="btn btn-primary" onclick="createGraph()">Test Button</a>
 
 </body>
 </html>
