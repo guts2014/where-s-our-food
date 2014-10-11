@@ -10,6 +10,7 @@
     ],
     "version" : "0.0.1",
     "dependencies": {
-        "sendgrid": "1.1.1"
+        "sendgrid": "1.1.1",
+        "express" : "4.9.7"
     }
 }
