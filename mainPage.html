@@ -1,0 +1,47 @@
+<html>
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<script src="jquery-latest.js"></script>
+	<script src="bootstrap.min.js"></script>
+	<meta charset="utf-8"> 
+	<link rel="stylesheet" href="bootstrap.min.css">
+	<link rel="stylesheet" href="bootstrap-theme.min.css">
+	<link rel="stylesheet" type="text/css" href="Mainstyles.css">
+	<script type="text/javascript">
+	var sendgrid_username   = "zomtorg";
+	var sendgrid_password   = "Qmananas7";
+	var to                  = "a.asenov.boyan@gmail.com";
+
+	function sendMail(){
+		var dotenv = require('dotenv');
+		dotenv.load();
+
+		var sendgrid = require('sendgrid')(sendgrid_username, sendgrid_password);
+		var email = new sendgrid.Email();
+		alert("Success Completed");
+		email.addTo(to);
+		email.setFrom(to);
+		email.setSubject('[sendgrid-php-example] Owl');
+		email.setText('Owl are you doing?');
+		email.setHtml('<strong>%how% are you doing?</strong>');
+		email.addSubstitution("%how%", "Owl");
+		email.addHeader('X-Sent-Using', 'SendGrid-API');
+		email.addHeader('X-Transport', 'web');
+		email.addFile({path: './gif.gif', filename: 'owl.gif'});
+
+		sendgrid.send(email, function(err, json) {
+		  if (err) { return console.error(err); }
+		  console.log(json);
+		});
+
+		alert("Success Completed");
+
+	}
+	</script>
+	<title></title>
+</head>
+<body>
+	<a href="#" class="btn btn-primary" onclick="sendMail()">Test Button</a>
+
+</body>
+</html>
