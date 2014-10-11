@@ -1,15 +1,15 @@
 //play single note
 
 var audio = [
-	new Audio('sounds/0.wav'),
-	new Audio('sounds/1.wav'),
-	new Audio('sounds/2.wav'),
-	new Audio('sounds/3.wav'),
-	new Audio('sounds/4.wav'),
-	new Audio('sounds/5.wav'),
-	new Audio('sounds/6.wav'),
-	new Audio('sounds/7.wav'),
-	new Audio('sounds/8.wav')
+	new Audio('sounds/banjo_c_penta/0.wav'),
+	new Audio('sounds/banjo_c_penta/1.wav'),
+	new Audio('sounds/banjo_c_penta/2.wav'),
+	new Audio('sounds/banjo_c_penta/3.wav'),
+	new Audio('sounds/banjo_c_penta/4.wav'),
+	new Audio('sounds/banjo_c_penta/5.wav'),
+	new Audio('sounds/banjo_c_penta/6.wav'),
+	new Audio('sounds/banjo_c_penta/7.wav'),
+	new Audio('sounds/banjo_c_penta/8.wav')
 ];
 function playNote(note){
 
