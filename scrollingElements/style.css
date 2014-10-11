@@ -1,0 +1,60 @@
+body {
+    margin: 0;
+    padding: 0;
+    background: #444444;
+}
+
+.cont {
+    width: 900px;
+    height: 800px;
+    margin: 20px auto 0 auto;
+}
+
+.sep {
+    height: 10px;
+    margin: 5px;
+    width: auto;
+}
+
+.title {
+    font-family: 'HelveticaNeue-Thin';
+    font-size: 72px;
+    color: #E9E9E9;
+    left: 0;
+}
+
+.subtitle {
+    font-family: 'HelveticaNeue-Thin';
+    font-size: 48px;
+    color: #919191;
+    left: 0;
+}
+
+.letter {
+    font-family: 'HelveticaNeue-Thin';
+    font-size: 48px;
+    color: #7DADCA;
+    margin: 20px;
+}
+
+.regText {
+    font-family: 'HelveticaNeue-Thin';
+    font-size: 42px;
+    color: #BBBBBB;
+    margin-top: 20px;
+}
+
+.thisBox {
+    width: 320px;
+    height: 100px;
+    background: #666;
+    float: left;
+}
+
+#main {
+    height: 100px;
+    width: 700px;
+    overflow-x:scroll;
+    layout: 'horizontal';
+    background: #0066FF;
+}

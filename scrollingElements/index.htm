@@ -1,0 +1,81 @@
+<html>
+<head>
+    <script type="text/javascript" src="jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="jquery.onepage-scroll.min.js"></script>
+    <link rel='stylesheet' href='onepage-scroll.css' type='text/css'>
+    <link rel="stylesheet" href="style.css">
+
+    <script>
+        $(document).ready(function(){
+            $("#fullpage").onepage_scroll({
+                sectionContainer: "section",
+                responsiveFallback: 600,
+                loop: false
+            });
+        });
+
+    </script>
+</head>
+<body>
+    <div id="fullpage">
+        <section>
+            <div class="cont">
+                <span class="title">Where's Our Sound?</span><br>
+                <span class="subtitle">#DoYouHaveTheGUTS 2014</span>
+                <div class="sep"></div>
+                <div class="sep"></div>
+                <span class="title">
+                    Collabarative music composition using the SendGrid API<br>
+                </span>
+                <div class="sep"></div>
+                <div class="sep"></div>
+                <span class="regText">
+                    Team Where's-Our-Food<br>
+                </span>
+            </div>
+        </section>
+        <section>
+            <div class="cont">
+                <span class="title">Drum Beat Choices</span><br>
+                <span class="subtitle">Listen to the following drum loops</span><br><br>
+
+                <span class="letter">A</span><br><br>
+                <span class="letter">B</span><br><br>
+                <span class="letter">C</span><br><br>
+                <span class="letter">D</span><br>
+            </div>
+        </section>
+        <section>
+            <div class="cont">
+                <span class="title">Select Your Preferred Beat</span><br>
+                <span class="subtitle">Email wys@bymail.in</span><br><br>
+
+                <span class="letter">A</span><br><br>
+                <span class="letter">B</span><br><br>
+                <span class="letter">C</span><br><br>
+                <span class="letter">D</span><br>
+            </div>
+        </section>
+        <section>
+            <div class="cont">
+                <span class="title">Now It's Time For Melodies</span><br>
+                <span class="subtitle">Email your melody chains to wys@btmail.in</span><br>
+                <div class="sep"></div>
+                <span class="regText">
+                    A melody chain is an 8 digit number, each digit representing half a beat. <b>1 - 8</b> represent different notes ascending in pitch and <b>0</b> represents a break.<br>
+                </span>
+                <div class="sep"></div>
+                <span class="regText">
+                    <b>Example String: </b>23402040
+                </span>
+            </div>
+        </section>
+        <section>
+            <div class="cont">
+                <span class="title">Where's Our Sound?</span><br>
+                <span class="subtitle">#DoYouHaveTheGUTS 2014</span>
+            </div>
+        </section>
+    </div>
+</body>
+</html>

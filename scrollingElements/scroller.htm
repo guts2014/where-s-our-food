@@ -1,0 +1,25 @@
+<html>
+<head>
+    <script type="text/javascript" src="jquery-2.1.1.min.js"></script>
+    <script type="text/javascript">
+        function fill(){
+            for(i=0; i<20; i++){
+                $('#main').append('hello');
+            }
+        }
+
+        function move(){
+            $("#one").animate({
+                scrollLeft: $(currentElement).offset().left
+            }, 800);
+        }
+    </script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="main"></div>
+    <div id="box" class="thisBox">hfdsjksdf</div>
+    <button onClick="fill()" title="woop"></button>
+    <button onClick="move()" title="woop"></button>
+</body>
+</html>
