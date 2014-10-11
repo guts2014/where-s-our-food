@@ -13,5 +13,6 @@
         "sendgrid": "1.1.1",
         "express" : "4.9.7",
         "body-parser" : "1.9.0"
+        "multiparty" : "3.3.2"
     }
 }
