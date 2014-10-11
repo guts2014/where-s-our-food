@@ -99,3 +99,11 @@ body {
 #startDrumCount {
     margin-left: 80px;
 }
+#textarea1{
+    background-color:#444444;
+    border-color: #444444;
+    color:#888888;
+    font-size:40px;
+    font-family: "HelveticaNeue-Thin";
+    overflow:hidden;
+}
