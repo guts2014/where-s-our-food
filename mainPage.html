@@ -18,7 +18,9 @@
 	setInterval(function(){
 		var currentDate = new Date().getTime();
 		var secondsLeft = Math.round((targetDate - currentDate) / 1000);
-		countdown.innerHTML = secondsLeft + " seconds left";
+		if(secondsLeft >= 0){
+			countdown.innerHTML = secondsLeft + " seconds left";
+		}
 	}, 1000)
 
 	//Interval for testing purposes only
@@ -31,7 +33,6 @@
 		total = 0;
 		for (var i = 1; i < input.length; i++) {
 			total += input[i];
-			console.log(input[i]);
 		}
 
 		createGraph(input, total);
@@ -53,6 +54,12 @@
 		fourthScore.innerHTML = Math.round(input[4] / total * 100) + "%";
  	}
 
+ 	function resetGraph(){
+ 		$("#firstScore").animate({width: 1 + "%"}, 400);
+		$("#secondScore").animate({width: 1 + "%"}, 400);
+		$("#thirdScore").animate({width: 1 + "%"}, 400);
+		$("#fourthScore").animate({width: 1 + "%"}, 400);
+ 	}
 	function sendMail(){
 		var dotenv = require('dotenv');
 		dotenv.load();
@@ -119,6 +126,6 @@
 		<div id="fourthScore"></div>
 	</div>
 	<a href="#" class="btn btn-primary" onclick="createGraph()">Test Button</a>
-
+	<a href="#" class="btn btn-primary" onclick="resetGraph()">Reset Graph Button</a>
 </body>
 </html>
