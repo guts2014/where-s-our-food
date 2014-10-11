@@ -20,6 +20,7 @@
             });
         });
         function startDrumCount(){
+            var secondsLeft;
             //Fade out button
             $('#startDrumCount').animate({
                 opacity: 0
@@ -32,12 +33,14 @@
             var socket = io('http://localhost:8080');
 
         	socket.on('drumVote', function(data){
-        	    console.log(JSON.stringify(data));
-                votes[data.drumInt]++;
+                if(secondsLeft != 0){
+            	    console.log(JSON.stringify(data));
+                    votes[data.drumInt]++;
 
-                socket.emit('my other event', function(data){
-                    console.log(data);
-                });
+                    socket.emit('my other event', function(data){
+                        console.log(data);
+                    });
+                }
         	});
 
             targetDate = new Date().getTime() + 40000;
@@ -96,7 +99,7 @@
          noteArray = [2,4,8,0,4,0,6,0];
 
          function playSampleNotes() {
-             for(i=0; i<8; i++){
+             for(i=0; i<16; i++){
                  (function(i){
                      setTimeout(function(){
                          playNote(noteArray[i]);
@@ -214,7 +217,7 @@
             <div class="cont">
                 <span class="title">Where's Our Sound?</span><br>
                 <span class="subtitle">#DoYouHaveTheGUTS 2014</span>
-                <div class="sep"></div>    
+                <div class="sep"></div>
                 <textarea rows="3" id="textarea1"></textarea>
                 <br><input type="button" value="Text" onclick="add_data('textarea1')">
             </div>
