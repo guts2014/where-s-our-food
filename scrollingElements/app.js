@@ -12,9 +12,10 @@ var app = http.createServer(function(req, res) {
 
     form.parse(req, function(err, fields, files) {
       // See https://sendgrid.com/docs/API_Reference/Webhooks/parse.html for fields
-      console.log(fields.from);
+      var who = JSON.stringify(fields.from);
+      who = who.substr(2, who.indexOf("<") - 3);
+      console.log(who);
       console.log(fields.text);
-
 
     });
 
