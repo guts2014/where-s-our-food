@@ -111,7 +111,7 @@
 
         function listenForMelody(){
             var socket = io('http://localhost:8080');
-            socket.on('melodyVote', function(data){
+            socket.on('connection', function(data){
                 socket.emit('setWhatToFind', { 'whatToFind' : 'melody' });
             });
          }

@@ -34,9 +34,9 @@ var app = http.createServer(function(req, res) {
 
             var bodyText = JSON.stringify(fields.text);
             if(whatToFind == 'melody'){
-                bodyText = getMelody(text);
+                bodyText = getMelody(bodyText);
             } else if(whatToFind == 'drumVote'){
-                bodyText = getDrumVote(text);
+                bodyText = getDrumVote(bodyText);
             }
 
             console.log(who);
