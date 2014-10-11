@@ -14,7 +14,7 @@ function getMelody(emailBody){
 
 function getDrumVote(emailBody){
     var drumVoteStr = emailBody;
-    drumVoteStr = drumVoteStr.CharAt(0);
+    drumVoteStr = JSON.stringify(drumVoteStr).CharAt(0);
     return drumVoteStr;
 }
 
