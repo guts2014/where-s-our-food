@@ -15,14 +15,13 @@ function handler (req, res) {
     res.writeHead(200);
     res.end(data);
   });
-
-
 }
 
 io.on('connection', function (socket) {
     setInterval(function(){
-        socket.emit('drumVote', { drumInt: 1 });
-    }, 2000);
+        var randInt = Math.floor(Math.random() * 4);
+        socket.emit('drumVote', { drumInt: randInt });
+    }, 1000);
 
     socket.on('my other event', function (data) {
         console.log(data);

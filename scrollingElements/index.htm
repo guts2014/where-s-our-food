@@ -26,13 +26,15 @@
             }, 500);
 
             //Initialise vote count array
-            var votes = [4,21,40,3];
+            var votes = [0,0,0,0];
 
             //Open up websocket to node.js server counting votes
             var socket = io('http://localhost:8080');
 
         	socket.on('drumVote', function(data){
         	    console.log(JSON.stringify(data));
+                votes[data.drumInt]++;
+
                 socket.emit('my other event', function(data){
                     console.log(data);
                 });
