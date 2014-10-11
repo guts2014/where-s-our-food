@@ -1,7 +1,16 @@
 <html>
 <head>
+
     <script type="text/javascript" src="jquery-2.1.1.min.js"></script>
     <script type="text/javascript" src="jquery.onepage-scroll.min.js"></script>
+    <script src="https://cdn.socket.io/socket.io-1.1.0.js"></script>
+    <script src="../bootstrap.min.js"></script>
+    <script src="../Require.js"></script>
+    <script src="playnote.js"></script>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="../bootstrap.min.css">
+    <link rel="stylesheet" href="../bootstrap-theme.min.css">
+    <link rel="stylesheet" type="text/css" href="../Mainstyles.css">
     <link rel='stylesheet' href='onepage-scroll.css' type='text/css'>
     <link rel="stylesheet" href="style.css">
 
@@ -9,10 +18,89 @@
         $(document).ready(function(){
             $("#fullpage").onepage_scroll({
                 sectionContainer: "section",
-                responsiveFallback: 600,
                 loop: false
             });
         });
+        function startDrumCount(){
+            //Fade out button
+            $('#startDrumCount').animate({
+                opacity: 0
+            }, 500);
+
+            //Initialise vote count array
+            var votes = [4,21,40,3];
+
+            //Open up websocket to node.js server counting votes
+            var socketDrum = io('http://localhost');
+            socketDrum.on('drumVote', function (data) {
+                console.log(data.voteInt);
+                votes[voteInt]++;
+            });
+
+            targetDate = new Date().getTime() + 40000;
+
+            //initialise timer with 40 secs
+            $('#countdown').html("40 seconds left");
+
+            //Creates a countdown timer
+            setInterval(function(){
+                var currentDate = new Date().getTime();
+                var secondsLeft = Math.round((targetDate - currentDate) / 1000);
+                if(secondsLeft >= 0){
+                    $('#countdown').html(secondsLeft + " seconds left");
+                }
+            }, 1000);
+
+            //Interval for testing purposes only
+            setInterval(function(){
+                total = 0;
+
+                for (var i = 0; i < (votes.length); i++) {
+                    total += votes[i];
+                }
+
+                createGraph(votes, total);
+            }, 2000);
+        }
+
+        function createGraph(votes, total){
+            var firstScore = document.getElementById("firstScore");
+            var secondScore = document.getElementById("secondScore");
+            var thirdScore = document.getElementById("thirdScore");
+            var fourthScore = document.getElementById("fourthScore");
+            //firstScore.style.width = input[1] / total * 100 + "%";
+            $("#firstScore").animate({width: votes[0] / total * 100 + "%"}, 400);
+            $("#secondScore").animate({width: votes[1] / total * 100 + "%"}, 400);
+            $("#thirdScore").animate({width: votes[2] / total * 100 + "%"}, 400);
+            $("#fourthScore").animate({width: votes[3] / total * 100 + "%"}, 400);
+            firstScore.innerHTML = Math.round(votes[0] / total * 100) + "%";
+            secondScore.innerHTML = Math.round(votes[1] / total * 100) + "%";
+            thirdScore.innerHTML = Math.round(votes[2] / total * 100) + "%";
+            fourthScore.innerHTML = Math.round(votes[3] / total * 100) + "%";
+         }
+
+         function resetGraph(){
+            $("#firstScore").animate({width: 1 + "%"}, 400);
+            $("#secondScore").animate({width: 1 + "%"}, 400);
+            $("#thirdScore").animate({width: 1 + "%"}, 400);
+            $("#fourthScore").animate({width: 1 + "%"}, 400);
+         }
+
+         //
+         var timesPlayed = 0;
+
+         //array that stores the notes
+         noteArray = [2,4,8,0,4,0,6,0];
+
+         function playSampleNotes() {
+             for(i=0; i<8; i++){
+                 (function(i){
+                     setTimeout(function(){
+                         playNote(noteArray[i]);
+                     }, 300 * i);
+                 }(i));
+             }
+         }
 
     </script>
 </head>
@@ -24,7 +112,7 @@
                 <span class="subtitle">#DoYouHaveTheGUTS 2014</span>
                 <div class="sep"></div>
                 <div class="sep"></div>
-                <span class="title">
+                <span class="letter" style="margin-left: 0">
                     Collabarative music composition using the SendGrid API<br>
                 </span>
                 <div class="sep"></div>
@@ -50,10 +138,28 @@
                 <span class="title">Select Your Preferred Beat</span><br>
                 <span class="subtitle">Email wys@bymail.in</span><br><br>
 
-                <span class="letter">A</span><br><br>
-                <span class="letter">B</span><br><br>
-                <span class="letter">C</span><br><br>
-                <span class="letter">D</span><br>
+                <div class="statusBar regText" style="margin-top: -20px; margin-bottom: 30px">
+                    <div id="countdown"></div>
+                </div>
+
+                <span class="letter">A</span>
+                <div class="statusBar progress progress-striped active">
+                    <div class="progress-bar" id="firstScore"></div>
+                </div>
+                <span class="letter">B</span>
+                <div class="statusBar progress progress-striped active">
+                    <div class="progress-bar" id="secondScore"></div>
+                </div>
+                <span class="letter">C</span>
+                <div class="statusBar progress progress-striped active">
+                    <div class="progress-bar" id="thirdScore"></div>
+                </div>
+                <span class="letter">D</span>
+                <div class="statusBar progress progress-striped active">
+                    <div class="progress-bar" id="fourthScore"></div>
+                </div>
+
+                <a href="#" id="startDrumCount" class="btn btn-primary" onclick="startDrumCount()">Open Voting</a>
             </div>
         </section>
         <section>
@@ -66,7 +172,8 @@
                 </span>
                 <div class="sep"></div>
                 <span class="regText">
-                    <b>Example String: </b>23402040
+                    <b>Example String: </b>24804060<br>
+                    <a href="#" id="playSampleNotes" class="btn btn-primary" onclick="playSampleNotes()">Listen</a>
                 </span>
             </div>
         </section>

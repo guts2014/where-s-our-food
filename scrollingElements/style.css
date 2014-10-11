@@ -58,3 +58,44 @@ body {
     layout: 'horizontal';
     background: #0066FF;
 }
+
+#countdown {
+    margin-left: 80px;
+}
+
+.statusBar{
+    width: 800px;
+    height: 20px;
+}
+#firstScore{
+    background-color: #CA7D7D;
+    padding-top: 4px;
+    font-size: 14pt;
+}
+#secondScore{
+    background-color: #7DADCA;
+    padding-top: 4px;
+    font-size: 14pt;
+}
+#thirdScore{
+    background-color: #7DCA8B;
+    padding-top: 4px;
+    font-size: 14pt;
+}
+#fourthScore{
+    background-color: #DD8D65;
+    padding-top: 4px;
+    font-size: 14pt;
+}
+.progress-bar{
+    height: 20px;
+
+}
+.progress{
+    background: #333333;
+    margin: -43px 0 40px 80px;
+}
+
+#startDrumCount {
+    margin-left: 80px;
+}
