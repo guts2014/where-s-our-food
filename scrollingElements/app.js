@@ -4,22 +4,49 @@ var io = require('socket.io')(app);
 var fs = require('fs');
 var port = 8080;
 
+var whatToFind = 'drumVote';
+
+function getMelody(emailBody){
+    var regex = /([0-8]){8}/;
+    var melody = emailBody.match(regex);
+    return melody[0];
+}
+
+function getDrumVote(emailBody){
+    var drumVoteStr = emailBody;
+    drumVoteStr = drumVoteStr.CharAt(0);
+    return drumVoteStr;
+}
+
 var app = http.createServer(function(req, res) {
-  if (req.method === 'POST') {
-    console.log("POST received");
-    // parse a file upload
-    var form = new multiparty.Form();
 
-    form.parse(req, function(err, fields, files) {
-      // See https://sendgrid.com/docs/API_Reference/Webhooks/parse.html for fields
-      var who = JSON.stringify(fields.from);
-      who = who.substr(2, who.indexOf("<") - 3);
-      console.log(who);
-      console.log(fields.text);
+    if (req.method === 'POST') {
 
-    });
+        console.log("POST received");
 
-    return;
+        // parse a file upload
+        var form = new multiparty.Form();
+
+        form.parse(req, function(err, fields, files) {
+            // See https://sendgrid.com/docs/API_Reference/Webhooks/parse.html for fields
+            var who = JSON.stringify(fields.from);
+            who = who.substr(2, who.indexOf("<") - 3);
+
+            var bodyText = JSON.stringify(fields.text);
+            if(whatToFind == 'melody'){
+                bodyText = getMelody(text);
+            } else if(whatToFind == 'drumVote'){
+                bodyText = getDrumVote(text);
+            }
+
+            console.log(who);
+            console.log(bodyText);
+
+
+        });
+
+        return;
+
     }
 }).listen(port);
 
@@ -31,7 +58,8 @@ io.on('connection', function (socket) {
         socket.emit('drumVote', { drumInt: randInt });
     }, 1000);
 
-    socket.on('my other event', function (data) {
-        console.log(data);
+    socket.on('setWhatToFind', function (data) {
+        whatToFind = data.whatToFind;
+        console.log(whatToFind);
     });
 });

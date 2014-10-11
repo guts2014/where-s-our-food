@@ -32,15 +32,12 @@
 
             //Open up websocket to node.js server counting votes
             var socket = io('http://localhost:8080');
-
         	socket.on('drumVote', function(data){
                 if(secondsLeft != 0){
             	    console.log(JSON.stringify(data));
                     votes[data.drumInt]++;
 
-                    socket.emit('my other event', function(data){
-                        console.log(data);
-                    });
+                    //socket.emit('setWhatToFind', { 'whatToFind' : '' });
                 }
         	});
 
@@ -110,6 +107,13 @@
                      }, 300 * i);
                  }(i));
              }
+         }
+
+        function listenForMelody(){
+            var socket = io('http://localhost:8080');
+            socket.on('melodyVote', function(data){
+                socket.emit('setWhatToFind', { 'whatToFind' : 'melody' });
+            });
          }
 
     </script>
@@ -214,6 +218,7 @@
                 <span class="regText">
                     <b>Example String: </b>24804060<br>
                     <a href="#" id="playSampleNotes" class="btn btn-primary" onclick="playSampleNotes()">Listen</a>
+                    <a href="#" id="startDrumCount" class="btn btn-primary" onclick="listenForMelody()">listenForMelody</a>
                 </span>
             </div>
         </section>
