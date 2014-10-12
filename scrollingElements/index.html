@@ -309,6 +309,8 @@
 
             queue.unshift(queueObj);
             console.log(JSON.stringify(queueObj) + " queued");
+
+            $('#log').prepend(queueObj.postName + " // " + queueObj.notes + "<br>");
         }
 
         function getFirstKey(data) {
@@ -578,9 +580,8 @@
                 </span>
                 <div class="sep"></div>
                 <span class="regText">
-                    <b>Example String: </b>24804060<br>
+                    <b>Example String: </b>64565434<br>
                     <a href="#" id="playSampleNotes" class="btn btn-primary" onclick="playSampleNotes()">Listen</a>
-                    <a href="#" id="startDrumCount" class="btn btn-primary" onclick="listenForMelody()">listenForMelody</a>
                 </span>
             </div>
         </section>
@@ -593,12 +594,11 @@
                     <div id="stave">
                         <div id="vertical"></div>
                     </div>
-                    <div id="gradient"></div>
-                    <button onClick="createObject('Boyan Asenov', [1, 2, 3, 4, 5, 6, 7, 8])" title="woop"></button>
-                    <button onClick="updateObjects()" title="woop"></button>
+
                 </div>
+                <div id="log"></div>
                 <textarea rows="3" id="textarea1"></textarea>
-                <br><input type="button" value="Text" onclick="add_data('textarea1')">
+                <br>
                 <a href="#" id="playSampleNotes" class="btn btn-primary" onclick="setUpScroller()">Go</a>
 
             </div>

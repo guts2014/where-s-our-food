@@ -8,7 +8,7 @@ function getMelody(emailBody){
 }
 
 function getFirstKey(data) {
-	for (elem in data) 
+	for (elem in data)
 	    return elem;
 }
 

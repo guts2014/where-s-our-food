@@ -114,3 +114,12 @@ body {
     font-family: "HelveticaNeue-Thin";
     overflow:hidden;
 }
+
+#log {
+    height:250px;
+    width: 900px;
+    color: #BBBBBB;
+    font-size:20px;
+    font-family: "HelveticaNeue-Thin";
+    overflow:scroll;
+}
