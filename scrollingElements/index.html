@@ -67,7 +67,7 @@
 
             targetDate = new Date().getTime() + 80000;
 
-            //initialise timer with 40 secs
+            //initialise timer with 80 secs
             $('#countdown').html("80 seconds left");
 
             //Creates a countdown timer
@@ -149,6 +149,9 @@
             stopDrums();
 
             //audioArr.append(audio);
+
+            audio = new Audio('sounds/db' + ind + '.wav');
+            audio.play();
 
             drumInterval = setInterval(function(){
                 audio = new Audio('sounds/db' + ind + '.wav');
