@@ -26,14 +26,14 @@ body {
 .subtitle {
     font-family: 'HelveticaNeue-Thin';
     font-size: 48px;
-    color: #919191;
+    color: #7DADCA;
     left: 0;
 }
 
 .letter {
     font-family: 'HelveticaNeue-Thin';
     font-size: 48px;
-    color: #7DADCA;
+    color: #919191;
     margin: 20px;
 }
 

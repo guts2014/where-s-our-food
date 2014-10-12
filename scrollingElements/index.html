@@ -80,7 +80,7 @@
         $(document).ready(function(){
             $("#fullpage").onepage_scroll({
                 sectionContainer: "section",
-                easing: "cubic-bezier(.66,.01,.4,.98)",
+                easing: "cubic-bezier(.48,.05,.46,.98)",
                 loop: false
             });
         });
@@ -310,7 +310,9 @@
             queue.unshift(queueObj);
             console.log(JSON.stringify(queueObj) + " queued");
 
-            $('#log').prepend(queueObj.postName + " // " + queueObj.notes + "<br>");
+            if(queueObj.notes != undefined){
+                $('#log').prepend(queueObj.postName + " // " + queueObj.notes + "<br>");
+            }
         }
 
         function getFirstKey(data) {
@@ -501,9 +503,17 @@
                 </span>
                 <div class="sep"></div>
                 <div class="sep"></div>
-                <span class="regText">
+                <div class="sep"></div>
+                <div class="sep"></div>
+                <div class="sep"></div>
+                <div class="sep"></div>
+                <div class="sep"></div>
+                <div class="sep"></div>
+                <div class="sep"></div>
+                <div class="sep"></div>
+                <span class="regText"><i>
                     Team Where's-Our-Food<br>
-                </span>
+                </span></i>
             </div>
         </section>
         <section>
@@ -588,7 +598,8 @@
         <section>
             <div class="cont">
                 <span class="title">Where's Our Sound?</span><br>
-                <span class="subtitle">#DoYouHaveTheGUTS 2014</span>
+                <span class="subtitle">wts@bymail.in</span>
+                <a href="#" id="playSampleNotes" style="margin: -30px 0 0 20px" class="btn btn-primary" onclick="setUpScroller()">Go</a>
 
                 <div id="scroller">
                     <div id="stave">
@@ -597,9 +608,7 @@
 
                 </div>
                 <div id="log"></div>
-                <textarea rows="3" id="textarea1"></textarea>
                 <br>
-                <a href="#" id="playSampleNotes" class="btn btn-primary" onclick="setUpScroller()">Go</a>
 
             </div>
         </section>
