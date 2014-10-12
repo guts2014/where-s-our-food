@@ -9,6 +9,66 @@
     <link rel="stylesheet" href="bootstrap-theme.min.css">
     <link rel='stylesheet' href='onepage-scroll.css' type='text/css'>
     <link rel="stylesheet" href="style.css">
+    <style type="text/css">
+    #wrapper{
+        width: 1200px;
+        margin: auto;
+        margin-top: 200px;
+    }
+    #vertical{
+        margin-left: 7%;
+        border-left: thick solid rgb(151,151,151);
+        height: 180px;
+        display: inline-block;
+        position: relative;
+        left: -5px;
+    }
+    #gradient{
+        position: absolute;
+        left: 12.8em;
+        top: 14.7em;
+        width: 7%;
+        z-index: 50;
+        height: 133px;
+        display: inline-block;
+        background-image: -webkit-gradient(
+  linear, left top, right top, from(rgba(68,68,68,1)),
+  to(rgba(64,55,56,0.7))
+);    }
+    .person{
+        width: 18%;
+        height: 8.30em;
+        position: absolute;
+        top: 15.5em;
+        padding-left: 14px;
+        text-align: left;
+        z-index: 5;
+
+    }
+    .personName{
+        background-color: transparent !important;
+        font-family: 'HelveticaNeue-Thin';
+        font-size: 1.4em;
+        width: 100%;
+        position: relative;
+        top: -1.2em;
+        z-index: 20;
+    }
+    .note{
+        width: 1.3em;
+        height: 1.3em;
+        border-radius: 1em;
+        position: absolute;
+        bottom: -2.77em;
+    }
+    #stave{
+        width: 90%;
+        height: 11em;
+        padding-top: 10px;
+        background-image: url(Stave2.png);
+        background-repeat: repeat-x;
+    }
+    </style>
     <script>
 
         var socket = io.connect('http://localhost:8080');
@@ -41,14 +101,19 @@
 
             if (note!=0) {
                 clipAudioNum++;
-                var mod = clipAudioNum % 2;
-                clipAudio[note][mod].play();
+                //var mod = clipAudioNum % 2;
+                console.log(note);
+                clipAudio[note][0].play();
             }
             timesPlayed += 1;
 
         }
 
         var chosenDrums = 1;
+
+        function setDrumsWin(submitted){
+            chosenDrums = submitted + 1;
+        }
 
         function startDrumCount(){
             var socket = io('http://localhost:8080');
@@ -84,14 +149,18 @@
             }, 1000);
 
             //Interval for testing purposes only
+            var previousTotal = 0
             var refreshInterval = setInterval(function(){
                 total = 0;
 
                 for (var i = 0; i < (votes.length); i++) {
                     total += votes[i];
                 }
+                if(total != previousTotal ){
+                    createGraph(votes, total);
+                    previousTotal = total;
+                }
 
-                createGraph(votes, total);
             }, 1000);
         }
 
@@ -105,10 +174,12 @@
             $("#secondScore").animate({width: votes[1] / total * 100 + "%"}, 400);
             $("#thirdScore").animate({width: votes[2] / total * 100 + "%"}, 400);
             $("#fourthScore").animate({width: votes[3] / total * 100 + "%"}, 400);
-            firstScore.innerHTML = Math.round(votes[0] / total * 100) + "%";
-            secondScore.innerHTML = Math.round(votes[1] / total * 100) + "%";
-            thirdScore.innerHTML = Math.round(votes[2] / total * 100) + "%";
-            fourthScore.innerHTML = Math.round(votes[3] / total * 100) + "%";
+            if(total != 0){
+                firstScore.innerHTML = Math.round(votes[0] / total * 100) + "%";
+                secondScore.innerHTML = Math.round(votes[1] / total * 100) + "%";
+                thirdScore.innerHTML = Math.round(votes[2] / total * 100) + "%";
+                fourthScore.innerHTML = Math.round(votes[3] / total * 100) + "%";
+            }
          }
 
          function resetGraph(){
@@ -187,7 +258,7 @@
         var queue = [];
 
         function triggerNotes(){
-            var drumAudio = new Audio('sounds/db' + chosenDrums + '.wav');
+            /*var drumAudio = new Audio('sounds/db' + chosenDrums + '.wav');
 
             for(var i=0; i<8; i++){
                 (function(i){
@@ -196,7 +267,30 @@
                         playNote(notesSix[2][i]);
                     }, 300 * i);
                 }(i));
-            }
+            }*/
+
+            var drumAudio = new Audio('sounds/db' + chosenDrums + '.wav').play();
+            var noteArr = notesSix[0];
+            playNote(noteArr[0]);
+            setTimeout(function(){
+                for(var i in noteArr) {
+                    playNote(noteArr[i+1]);
+                }
+            }, 300);
+            setInterval(function(){
+                var drumAudio = new Audio('sounds/db' + chosenDrums + '.wav').play();
+                var noteArr = notesSix[0];
+                if(noteArr != undefined){
+                    for(var i=0; i<8; i++){
+                        (function(i){
+                            setTimeout(function(){
+                                playNote(noteArr[i]);
+                                console.log(noteArr[i]);
+                            }, 300 * i);
+                        }(i));
+                    }
+                }
+            }, 2400);
         }
 
         function trigger(){
@@ -210,34 +304,96 @@
             }, 300);
         }
 
-        function queueBar(inputName, inputNotes){
-            var postName = inputName;
-            var notes = inputNotes;
-
-            var queueObj = new Object({});
-            queueObj.postName = postName;
-            queueObj.notes = notes;
+        function queueBar(obj){
+            var queueObj = obj;
 
             queue.unshift(queueObj);
             console.log(JSON.stringify(queueObj) + " queued");
         }
 
-        function setUpScroller(){
-            setInterval(function(){
-                triggerNotes();
-
-                namesSix.shift();
-                notesSix.shift();
-                if(queue.length >= 1){
-                    namesSix.push(queue[0].postName);
-                    notesSix.concat(queue[0].notes);
-                } else {
-                    namesSix.push('');
-                    notesSix.concat([0,0,0,0,0,0,0,0]);
-                }
-            }, 2400);
+        function getFirstKey(data) {
+            for (elem in data)
+                return elem;
         }
 
+        function deleteCurrentName(currentName){
+            delete queue[currentName];
+        }
+
+        Object.size = function(obj) {
+            var size = 0, key;
+            for (key in obj) {
+                if (obj.hasOwnProperty(key)) size++;
+            }
+            return size;
+        };
+
+        function createQueue(queueObj){
+            var emailName = queueObj.postName + a;
+            var melodyArr = queueObj.notes;
+            queue[emailName] = [];
+            for(var i=0; i<melodyArr.length; i++){
+                queue[emailName][i] = melodyArr[i];
+            }
+            console.log(queue);
+        }
+
+        function setUpScroller(){
+            triggerNotes();
+
+            setInterval(function(){
+                notesSix.shift();
+                var currentName = getFirstKey(queue);
+
+                console.log('with.notes');
+                console.log(queue[currentName].notes);
+                if(queue.length >= 0){
+                    notesSix.push(queue[currentName].notes);
+                    console.log(notesSix);
+                }
+                    else{
+                    notesSix.push(undefined);
+                }
+                deleteCurrentName(currentName);
+
+            }, 2400)
+
+            /*setInterval(function(){
+
+                if(queue.length >= 1){
+                    namesSix.push(queue[0].postName);
+
+                    for(var i in )
+
+                    notesSix.push(queue[0].notes);
+
+                    console.log(queue[0].notes);
+                } else {
+                    namesSix.push('');
+                    notesSix.push([0,0,0,0,0,0,0,0]);
+                }
+                namesSix.shift();
+                notesSix.shift();
+                queue.shift();
+                //updateObjects();
+                //createObject(postName, notes);
+
+                console.log(namesSix);
+                console.log(notesSix);
+            }, 2400);*/
+        }
+
+        var socket2 = io('http://localhost:8080');
+        socket2.on('melodyPush', function (data) {
+            console.log(JSON.stringify(data));
+            queueBar(data);
+        });
+        /*
+        socket.on('melodyPush', function(data){
+            setUpScroller();
+            queueBar(data.postName, data.notes);
+        });
+*/
         function createScroller(){
 
         }
@@ -249,6 +405,75 @@
             });
         }
 
+    </script>
+    <script type="text/javascript">
+        function fill(){
+            for(i=0; i<20; i++){
+                $('#main').append('hello');
+            }
+        }
+
+        function getHeight(note){
+            return 0.75 * note - 0.8;
+        }
+        function getColor(){
+            var randomNum = Math.floor(Math.random() * 3) + 1;
+            switch(randomNum){
+                case 1:
+                    var green = "126,202,138";
+                    return green;
+                    break;
+                case 2:
+                    var blue = "126,173,201";
+                    return blue;
+                    break;
+                case 3:
+                    var red = "203,125,125";
+                    return red;
+                    break;
+            }
+        }
+        function createObject(currentName, notes){
+            var id = 6;
+            var color = getColor();
+            var stave = document.getElementById('stave');
+            console.log(stave);
+            var nameSpan = '<span class="personName" style="color: rgb(' + color + ')">' + currentName + '</span>';
+            var person = '<div class="person" style="background-color: rgba(' + color + ',0.1); left:' + 1680.8 + '" id=' + id + '>';
+            person += nameSpan;
+            for (var i = 0; i < notes.length; i++) {
+                var height = getHeight(notes[i]);
+                var xPosition = (360 / 8) * i + 10;
+                var currentNote = '<div class="note" style="background-color: rgb(' + color + '); bottom: ' + height + 'em; left:' + xPosition + 'px"></div>';
+                person += currentNote;
+            }
+            person += '</div>';
+            console.log(person);
+            document.getElementById('stave').innerHTML += person;
+            $('#6').animate({
+                left: "-2160px",
+            }, 14400);
+        }
+        function updateObjects(){
+            Element.prototype.remove = function() {
+            this.parentElement.removeChild(this);
+            }
+            NodeList.prototype.remove = HTMLCollection.prototype.remove = function() {
+                for(var i = 0, len = this.length; i < len; i++) {
+                    if(this[i] && this[i].parentElement) {
+                        this[i].parentElement.removeChild(this[i]);
+                    }
+                }
+            }
+            if(document.getElementById("1")){
+                document.getElementById("1").remove();
+            }
+            for (var i = 2; i <= 6; i++) {
+                if(document.getElementById(i)){
+                    document.getElementById(i).setAttribute("id", i - 1);
+                }
+            }
+        }
     </script>
     <script>
         function add_data(input) {
@@ -323,19 +548,19 @@
                     <div id="countdown"></div>
                 </div>
 
-                <span class="letter">A</span>
+                <span class="letter" onClick="setDrumsWin(0)">A</span>
                 <div class="statusBar progress progress-striped active">
                     <div class="progress-bar" id="firstScore"></div>
                 </div>
-                <span class="letter">B</span>
+                <span class="letter" onClick="setDrumsWin(1)">B</span>
                 <div class="statusBar progress progress-striped active">
                     <div class="progress-bar" id="secondScore"></div>
                 </div>
-                <span class="letter">C</span>
+                <span class="letter" onClick="setDrumsWin(2)">C</span>
                 <div class="statusBar progress progress-striped active">
                     <div class="progress-bar" id="thirdScore"></div>
                 </div>
-                <span class="letter">D</span>
+                <span class="letter" onClick="setDrumsWin(3)">D</span>
                 <div class="statusBar progress progress-striped active">
                     <div class="progress-bar" id="fourthScore"></div>
                 </div>
@@ -364,9 +589,18 @@
                 <span class="title">Where's Our Sound?</span><br>
                 <span class="subtitle">#DoYouHaveTheGUTS 2014</span>
 
-                <div id="scroller"></div>
+                <div id="scroller">
+                    <div id="stave">
+                        <div id="vertical"></div>
+                    </div>
+                    <div id="gradient"></div>
+                    <button onClick="createObject('Boyan Asenov', [1, 2, 3, 4, 5, 6, 7, 8])" title="woop"></button>
+                    <button onClick="updateObjects()" title="woop"></button>
+                </div>
                 <textarea rows="3" id="textarea1"></textarea>
                 <br><input type="button" value="Text" onclick="add_data('textarea1')">
+                <a href="#" id="playSampleNotes" class="btn btn-primary" onclick="setUpScroller()">Go</a>
+
             </div>
         </section>
     </div>

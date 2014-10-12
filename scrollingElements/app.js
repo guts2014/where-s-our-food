@@ -176,7 +176,17 @@ var multiparty = require('multiparty'),
 function getMelody(emailBody){
     var regex = /([0-8]){8}/;
     var melody = emailBody.match(regex);
-    return melody[0];
+
+    if(melody != null){
+        var melArr = melody[0].split("");
+        for(var i in melArr){
+            melArr[i] = parseInt(melArr[i]);
+        }
+
+        console.log(melArr);
+
+        return melArr;
+    }
 }
 
 function getDrumVote(emailBody){
@@ -218,12 +228,20 @@ app.post("/", function(req, res) {
             var bodyReturn = JSON.stringify(fields.text);
             //alert(bodyReturn);
 
-            //if(bodyReturn.charAt(0) == /([0-8])/){
-                bodyReturn = getDrumVote(bodyReturn);
-                io.emit('drumVote', {'drumInt': bodyReturn});
+            drumReturn = getDrumVote(bodyReturn);
+            melReturn = getMelody(bodyReturn);
+
+            console.log(drumReturn);
+            console.log(melReturn);
+
+            //if(melReturn.len != 8){
+                io.emit('drumVote', {'drumInt': drumReturn});
+                io.emit('melodyPush', {'postName': who, 'notes': melReturn});
+            //}
+
             /*} else {
                 bodyReturn = getMelody(bodyReturn);
-                io.emit('melodyPush', {'name': who, 'notes': bodyReturn});
+
             }*/
 
             console.log(who);

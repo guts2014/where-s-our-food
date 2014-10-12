@@ -101,9 +101,9 @@ body {
 }
 
 #scroller {
-    height: 150px;
+    height: 200px;
     width:900px;
-    background: red;
+    overflow: hidden;
 }
 
 #textarea1{
