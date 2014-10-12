@@ -19,3 +19,5 @@ Collaborative music composition via the sendgrid API.
 ***Fairy Dust and Prayers***
 
 ******
+
+This project is licensed under the terms of the MIT License.
