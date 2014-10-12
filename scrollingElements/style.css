@@ -99,6 +99,13 @@ body {
 #startDrumCount {
     margin-left: 80px;
 }
+
+#scroller {
+    height: 150px;
+    width:900px;
+    background: red;
+}
+
 #textarea1{
     background-color:#444444;
     border-color: #444444;

@@ -27,14 +27,14 @@
 
         var clipAudio = [
             [null, null],
-            [new Audio('sounds/1.wav'),new Audio('sounds/1.wav')],
-            [new Audio('sounds/2.wav'),new Audio('sounds/2.wav')],
-            [new Audio('sounds/3.wav'),new Audio('sounds/3.wav')],
-            [new Audio('sounds/4.wav'),new Audio('sounds/4.wav')],
-            [new Audio('sounds/5.wav'),new Audio('sounds/5.wav')],
-            [new Audio('sounds/6.wav'),new Audio('sounds/6.wav')],
-            [new Audio('sounds/7.wav'),new Audio('sounds/7.wav')],
-            [new Audio('sounds/8.wav'),new Audio('sounds/8.wav')]
+            [new Audio('sounds/guitar_c_penta/1.wav'),new Audio('sounds/guitar_c_penta/1.wav')],
+            [new Audio('sounds/guitar_c_penta/2.wav'),new Audio('sounds/guitar_c_penta/2.wav')],
+            [new Audio('sounds/guitar_c_penta/3.wav'),new Audio('sounds/guitar_c_penta/3.wav')],
+            [new Audio('sounds/guitar_c_penta/4.wav'),new Audio('sounds/guitar_c_penta/4.wav')],
+            [new Audio('sounds/guitar_c_penta/5.wav'),new Audio('sounds/guitar_c_penta/5.wav')],
+            [new Audio('sounds/guitar_c_penta/6.wav'),new Audio('sounds/guitar_c_penta/6.wav')],
+            [new Audio('sounds/guitar_c_penta/7.wav'),new Audio('sounds/guitar_c_penta/7.wav')],
+            [new Audio('sounds/guitar_c_penta/8.wav'),new Audio('sounds/guitar_c_penta/8.wav')]
         ];
         var clipAudioNum = 2;
         function playNote(note){
@@ -48,6 +48,7 @@
 
         }
 
+        var chosenDrums = 1;
 
         function startDrumCount(){
             var secondsLeft;
@@ -155,12 +156,92 @@
             }, 2400);
         }
 
+        function playDrumsOnce(){
+            stopDrums();
+
+            audio = new Audio('sounds/db' + chosenDrums + '.wav');
+            audio.play();
+        }
+
         function stopDrums(){
             if(audio != null){
                 audio.pause();
                 clearInterval(drumInterval);
             }
             audio = null;
+        }
+
+        var notesSix = [0,0,0,0,0,0,0,0,
+                        0,0,0,0,0,0,0,0,
+                        1,2,3,4,5,6,7,8,
+                        0,0,0,0,0,0,0,0,
+                        0,0,0,0,0,0,0,0,
+                        0,0,0,0,0,0,0,0];
+
+        var namesSix = ['','','','','',''];
+
+        var queue = [];
+
+        function triggerNotes(){
+            var drumAudio = new Audio('sounds/db' + chosenDrums + '.wav');
+
+            for(var i=16; i<24; i++){
+                (function(i){
+                    setTimeout(function(){
+                        drumAudio.play();
+                        playNote(notesSix[i]);
+                    }, 300 * i);
+                }(i));
+            }
+        }
+
+        function trigger(){
+            var drumAudio = new Audio('sounds/db' + chosenDrums + '.wav').play();
+            noteArr = [2,0,2,3,4,3,6,5];
+            playNote(noteArr[0]);
+            setTimeout(function(){
+                for(var i in noteArr) {
+                    playNote(noteArr[i+1]);
+                }
+            }, 300);
+        }
+
+        function queueBar(inputName, inputNotes){
+            var postName = inputName;
+            var notes = inputNotes;
+
+            var queueObj = new Object({});
+            queueObj.postName = postName;
+            queueObj.notes = notes;
+
+            queue.unshift(queueObj);
+            console.log(JSON.stringify(queueObj) + " queued");
+        }
+
+        function setUpScroller(){
+            setInterval(function(){
+                triggerNotes();
+
+                namesSix.shift();
+                notesSix.shift();
+                if(queue.length >= 1){
+                    namesSix.push(queue[0].postName);
+                    notesSix.concat(queue[0].notes);
+                } else {
+                    namesSix.push('');
+                    notesSix.concat([0,0,0,0,0,0,0,0]);
+                }
+            }, 2400);
+        }
+
+        function createScroller(){
+
+        }
+
+        function listenForMelody(){
+            socket.on('melodyPush', function(data){
+                queueBar(data.postName, data.notes);
+            });
         }
 
     </script>
@@ -273,7 +354,8 @@
             <div class="cont">
                 <span class="title">Where's Our Sound?</span><br>
                 <span class="subtitle">#DoYouHaveTheGUTS 2014</span>
-                <div class="sep"></div>
+
+                <div id="scroller"></div>
                 <textarea rows="3" id="textarea1"></textarea>
                 <br><input type="button" value="Text" onclick="add_data('textarea1')">
             </div>
