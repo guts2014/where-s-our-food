@@ -172,12 +172,6 @@ var multiparty = require('multiparty'),
     fs = require("fs"),
     port = 3000;
 
-var parseMethod = 'getDrumVote';
-
-io.on('changeParseMethod', function(data){
-    parseMethod = data.changeTo;
-    console.log(parseMethod);
-});
 
 function getMelody(emailBody){
     var regex = /([0-8]){8}/;
@@ -222,15 +216,15 @@ app.post("/", function(req, res) {
             who = who.substr(2, who.indexOf("<") - 3);
 
             var bodyReturn = JSON.stringify(fields.text);
-            bodyReturn = getDrumVote(bodyReturn);
+            //alert(bodyReturn);
 
-            if(parseMethod == 'getDrumVote'){
+            //if(bodyReturn.charAt(0) == /([0-8])/){
                 bodyReturn = getDrumVote(bodyReturn);
                 io.emit('drumVote', {'drumInt': bodyReturn});
-            } else if(parseMethod == 'getMelody'){
-                bodyReturn = getMelodyVote(bodyReturn);
+            /*} else {
+                bodyReturn = getMelody(bodyReturn);
                 io.emit('melodyPush', {'name': who, 'notes': bodyReturn});
-            }
+            }*/
 
             console.log(who);
             console.log(bodyReturn);
