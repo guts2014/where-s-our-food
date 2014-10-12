@@ -165,16 +165,19 @@ var io = require('socket.io')(server);
 io.on('connection', function(){io.emit('test', {testData: true});});
 server.listen(8080);
 
-setInterval(function(){
-    io.emit('test', {testData: true});
-}, 3000);
-
 var multiparty = require('multiparty'),
     //io = require('socket.io').listen(app),
     url = require("url"),
     path = require("path"),
     fs = require("fs"),
     port = 3000;
+
+var parseMethod = 'getDrumVote';
+
+io.on('changeParseMethod', function(data){
+    parseMethod = data.changeTo;
+    console.log(parseMethod);
+});
 
 function getMelody(emailBody){
     var regex = /([0-8]){8}/;
@@ -218,14 +221,19 @@ app.post("/", function(req, res) {
             var who = JSON.stringify(fields.from);
             who = who.substr(2, who.indexOf("<") - 3);
 
-            var bodyText = JSON.stringify(fields.text);
-            bodyText = getDrumVote(bodyText);
+            var bodyReturn = JSON.stringify(fields.text);
+            bodyReturn = getDrumVote(bodyReturn);
+
+            if(parseMethod == 'getDrumVote'){
+                bodyReturn = getDrumVote(bodyReturn);
+                io.emit('drumVote', {'drumInt': bodyReturn});
+            } else if(parseMethod == 'getMelody'){
+                bodyReturn = getMelodyVote(bodyReturn);
+                io.emit('melodyPush', {'name': who, 'notes': bodyReturn});
+            }
 
             console.log(who);
-            console.log(bodyText);
-
-            io.emit('drumVote', {'drumInt': bodyText});
-
+            console.log(bodyReturn);
         });
 
         return;
