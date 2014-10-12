@@ -1,7 +1,7 @@
 //play single note
 
 var audio = [
-	new Audio('sounds/0.wav'),
+	null,
 	new Audio('sounds/1.wav'),
 	new Audio('sounds/2.wav'),
 	new Audio('sounds/3.wav'),
@@ -17,5 +17,5 @@ function playNote(note){
 		audio[note].play();
 	}
 	timesPlayed += 1;
-	
+
 }

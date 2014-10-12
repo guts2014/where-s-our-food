@@ -3,16 +3,20 @@
 
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
     <script type="text/javascript" src="jquery.onepage-scroll.min.js"></script>
-    <script src="https://cdn.socket.io/socket.io-1.1.0.js"></script>
-    <script src="playnote.js"></script>
+    <script type="text/javascript" src="/socket.io/socket.io.js"></script>
     <meta charset="utf-8">
     <link rel="stylesheet" href="bootstrap.min.css">
     <link rel="stylesheet" href="bootstrap-theme.min.css">
     <link rel='stylesheet' href='onepage-scroll.css' type='text/css'>
     <link rel="stylesheet" href="style.css">
-
-
     <script>
+
+        var socket = io.connect('http://localhost:8080');
+        socket.on('test', function (data) {
+            console.log(data);
+            socket.emit('my other event', { my: 'data' });
+        });
+
         $(document).ready(function(){
             $("#fullpage").onepage_scroll({
                 sectionContainer: "section",
@@ -20,6 +24,31 @@
                 loop: false
             });
         });
+
+        var clipAudio = [
+            [null, null],
+            [new Audio('sounds/1.wav'),new Audio('sounds/1.wav')],
+            [new Audio('sounds/2.wav'),new Audio('sounds/2.wav')],
+            [new Audio('sounds/3.wav'),new Audio('sounds/3.wav')],
+            [new Audio('sounds/4.wav'),new Audio('sounds/4.wav')],
+            [new Audio('sounds/5.wav'),new Audio('sounds/5.wav')],
+            [new Audio('sounds/6.wav'),new Audio('sounds/6.wav')],
+            [new Audio('sounds/7.wav'),new Audio('sounds/7.wav')],
+            [new Audio('sounds/8.wav'),new Audio('sounds/8.wav')]
+        ];
+        var clipAudioNum = 2;
+        function playNote(note){
+
+            if (note!=0) {
+                clipAudioNum++;
+                var mod = clipAudioNum % 2;
+                clipAudio[note][mod].play();
+            }
+            timesPlayed += 1;
+
+        }
+
+
         function startDrumCount(){
             var secondsLeft;
             //Fade out button
@@ -28,23 +57,17 @@
             }, 500);
 
             //Initialise vote count array
-            var votes = [0,0,0,0];
+            votes = [0,0,0,0];
 
-            //Open up websocket to node.js server counting votes
             var socket = io('http://localhost:8080');
-        	socket.on('drumVote', function(data){
-                if(secondsLeft != 0){
-            	    console.log(JSON.stringify(data));
-                    votes[data.drumInt]++;
+            socket.on('drumVote', function (data) {
+                votes[data.drumInt]++;
+            });
 
-                    //socket.emit('setWhatToFind', { 'whatToFind' : '' });
-                }
-        	});
-
-            targetDate = new Date().getTime() + 40000;
+            targetDate = new Date().getTime() + 80000;
 
             //initialise timer with 40 secs
-            $('#countdown').html("40 seconds left");
+            $('#countdown').html("80 seconds left");
 
             //Creates a countdown timer
             var cdInterval = setInterval(function(){
@@ -109,12 +132,36 @@
              }
          }
 
+        /*
         function listenForMelody(){
-            var socket = io('http://localhost:8080');
+            var socket = io('http://localhost:3000/');
             socket.on('connection', function(data){
                 socket.emit('setWhatToFind', { 'whatToFind' : 'melody' });
             });
-         }
+        }
+        */
+
+        var audio = null;
+        var drumInterval = null;
+
+        function playDrums(ind){
+            stopDrums();
+
+            //audioArr.append(audio);
+
+            drumInterval = setInterval(function(){
+                audio = new Audio('sounds/db' + ind + '.wav');
+                audio.play();
+            }, 2400);
+        }
+
+        function stopDrums(){
+            if(audio != null){
+                audio.pause();
+                clearInterval(drumInterval);
+            }
+            audio = null;
+        }
 
     </script>
     <script>
@@ -123,8 +170,8 @@
                 obj.value+="\n"+"blah test";
                 $("#textarea1").animate({
                     scrollTop:$("#textarea1")[0].scrollHeight - $("#textarea1").height()
-                },700)
-                }
+                },700);
+            }
 
     </script>
 </head>
@@ -180,7 +227,7 @@
         <section>
             <div class="cont">
                 <span class="title">Select Your Preferred Beat</span><br>
-                <span class="subtitle">Email wys@bymail.in</span><br><br>
+                <span class="subtitle">Email wts@bymail.in</span><br><br>
 
                 <div class="statusBar regText" style="margin-top: -20px; margin-bottom: 30px">
                     <div id="countdown"></div>
@@ -209,7 +256,7 @@
         <section>
             <div class="cont">
                 <span class="title">Now It's Time For Melodies</span><br>
-                <span class="subtitle">Email your melody chains to wys@btmail.in</span><br>
+                <span class="subtitle">Email your melody chains to wts@bymail.in</span><br>
                 <div class="sep"></div>
                 <span class="regText">
                     A melody chain is an 8 digit number, each digit representing half a beat. <b>1 - 8</b> represent different notes ascending in pitch and <b>0</b> represents a break.<br>
