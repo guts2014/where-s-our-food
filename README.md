@@ -12,6 +12,8 @@ Collaborative music composition via the sendgrid API.
 
 ***node.js***
 
+***socket.io***
+
 ***jQuery***
 
 ***Bootstrap***
